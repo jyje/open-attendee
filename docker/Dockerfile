@@ -1,19 +1,24 @@
 # syntax=docker/dockerfile:1
 # 빌드 맥락은 저장소 루트다: docker build -f docker/Dockerfile .
 # Vue 화면을 빌드하고(node), Python 서버에 얹어서(FastAPI) 이미지 하나로 낸다.
-ARG NODE_VERSION=22
+ARG NODE_VERSION=26.13.1
+ARG PNPM_VERSION=12.23.0
 ARG PYTHON_VERSION=3.13
 
 # --- 1) 화면 빌드 ---------------------------------------------------------
-FROM node:${NODE_VERSION}-alpine AS frontend
+# 다이제스트는 node:26.13.1-alpine 매니페스트 리스트다. 버전을 올릴 때 함께 바꾼다.
+FROM node:${NODE_VERSION}-alpine@sha256:6bd9ab43c0ec0190ca7b2d193906cb8b7edf6e7f4afa43ddeccd6452710bffb5 AS frontend
+# Node 26 이미지에는 corepack이 없어서 pnpm을 직접 설치한다.
+ARG PNPM_VERSION
+RUN npm install --global pnpm@${PNPM_VERSION}
 WORKDIR /build
 # vite.config.ts가 ../../design-system 의 토큰을 가져오므로 같은 상대 위치에 둔다.
 COPY design-system ./design-system
 WORKDIR /build/webapp/frontend
-COPY webapp/frontend/package.json webapp/frontend/package-lock.json ./
-RUN npm ci
+COPY webapp/frontend/package.json webapp/frontend/pnpm-lock.yaml webapp/frontend/pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY webapp/frontend/ ./
-RUN npm run build
+RUN pnpm run build
 
 # --- 2) 서버 의존성 -------------------------------------------------------
 FROM python:${PYTHON_VERSION}-slim AS backend

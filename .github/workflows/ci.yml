@@ -54,13 +54,16 @@ jobs:
         working-directory: webapp/frontend
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v6.1.1
+        with:
+          package_json_file: webapp/frontend/package.json
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: webapp/frontend/package-lock.json
-      - run: npm ci
-      - run: npm run build
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: webapp/frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
   helm:
     name: helm lint
     runs-on: ubuntu-24.04

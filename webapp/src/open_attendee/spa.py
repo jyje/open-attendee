@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 DEFAULT_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
 
 _NO_BUILD = (
-    "화면이 빌드되지 않았어요. webapp/frontend에서 `npm run build`를 실행하거나, "
+    "화면이 빌드되지 않았어요. webapp/frontend에서 `pnpm run build`를 실행하거나, "
     "개발 중이면 Vite 개발 서버(5173)로 접속하세요."
 )
 

@@ -4,12 +4,12 @@
 
 ## 실행
 
-Node.js 22 이상, npm 10 이상이 필요합니다.
+Node.js 26(`.nvmrc` 참고)과 pnpm 12가 필요합니다. `corepack enable`을 켜면 `package.json`의 `packageManager` 값대로 pnpm이 맞춰집니다.
 
 ```sh
-npm install        # 최초 1회
-npm run dev        # 개발 서버 (기본 http://localhost:3030)
-npm run build      # 정적 빌드 -> dist/
+pnpm install --frozen-lockfile   # 최초 1회
+pnpm run dev        # 개발 서버 (기본 http://localhost:3030)
+pnpm run build      # 정적 빌드 -> dist/
 ```
 
 ## 파일

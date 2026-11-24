@@ -70,4 +70,4 @@ def test_missing_build_says_so(settings: Settings, tmp_path: Path, monkeypatch) 
     with TestClient(create_app(settings, provider_factory=lambda: None), base_url=BASE_URL) as c:
         res = c.get("/login")
     assert res.status_code == 503
-    assert "npm run build" in res.text
+    assert "pnpm run build" in res.text

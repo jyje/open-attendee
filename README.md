@@ -129,8 +129,8 @@ uv run uvicorn open_attendee.main:app --reload --env-file ../.env --port 8080
 
 # 3. 화면 (다른 터미널, 저장하면 바로 반영)
 cd webapp/frontend
-npm ci
-npm run dev        # http://localhost:5173 으로 접속합니다
+pnpm install --frozen-lockfile
+pnpm run dev        # http://localhost:5173 으로 접속합니다
 ```
 
 로그인 쿠키에 `Secure`가 붙어 있어서 `http://localhost`나 `https://`에서만 로그인이 유지됩니다.
@@ -162,7 +162,7 @@ cd webapp/src
 uv run ruff check . && uv run ruff format --check . && uv run pytest
 
 # 화면: 타입 검사와 빌드
-cd webapp/frontend && npm run build
+cd webapp/frontend && pnpm run build
 
 # provider-manager
 cd provider-manager/src && uv run pytest
@@ -203,13 +203,13 @@ helm lint helm --set image.tag=test
 - 배포 가이드: [`docs/deploy.md`](docs/deploy.md)
 - Kiro를 어떻게 썼는지: [`BUILD_REPORT.md`](BUILD_REPORT.md), [`docs/KIRO_USAGE.md`](docs/KIRO_USAGE.md)
 - 평가, 거버넌스, 보안 유의사항: [`docs/EVALUATION_GOVERNANCE_SECURITY.md`](docs/EVALUATION_GOVERNANCE_SECURITY.md)
-- 발표자료: [`PRESENTATION.pdf`](PRESENTATION.pdf). 원본은 [`slidev/slides.md`](slidev/slides.md)이고, 글꼴은 Pretendard(한글)와 Rubik(영문 제목, 디자인 시스템)을 npm으로 묶어 PDF에 넣었습니다.
+- 발표자료: [`PRESENTATION.pdf`](PRESENTATION.pdf). 원본은 [`slidev/slides.md`](slidev/slides.md)이고, 글꼴은 Pretendard(한글)와 Rubik(영문 제목, 디자인 시스템)을 npm 패키지로 묶어 PDF에 넣었습니다.
 
   ```bash
   cd slidev
-  npm ci
-  npm i --no-save playwright-chromium    # PDF 내보내기에 필요합니다
-  npx slidev export --output ../PRESENTATION.pdf --wait 3000
+  pnpm install --frozen-lockfile
+  pnpm add --save-dev playwright-chromium    # PDF 내보내기에 필요합니다. package.json과 락 파일 변경은 커밋하지 마세요
+  pnpm exec slidev export --output ../PRESENTATION.pdf --wait 3000
   ```
 
 ## 출처와 라이선스
